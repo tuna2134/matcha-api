@@ -1,0 +1,3 @@
+[workspace]
+members = ["matcha_core"]
+resolver = "2"
