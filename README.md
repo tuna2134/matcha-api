@@ -1,8 +1,8 @@
 # matcha-api
-Now working...
+Matcha-TTS-JPの推論部分をRustに移植しました。
 
 ## Prepare onnx model
-始める前にonnxモデルを準備しましょう
+始める前にonnxモデルを準備しましょう。
 
 ### 1, Install vocoder model
 vocoderモデルをインストールしましょう。
