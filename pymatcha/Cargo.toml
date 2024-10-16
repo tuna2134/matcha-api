@@ -1,0 +1,16 @@
+[package]
+name = "pymatcha"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "pymatcha"
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0.89"
+matcha_core = { version = "0.1.0", path = "../matcha_core" }
+ndarray = "0.16.1"
+numpy = "0.22.0"
+pyo3 = { version = "0.22.0", features = ["anyhow"] }
