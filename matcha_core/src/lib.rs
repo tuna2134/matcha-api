@@ -17,7 +17,7 @@ mod tests {
     #[test]
     fn it_works() -> anyhow::Result<()> {
         let pp = text::TextPreprocessor::new()?;
-        let result = text::txt2seq("こんにちは", pp)?;
+        let result = text::txt2seq("こんにちは、今日はいい天気ですね。", pp)?;
         let generator = generator::MatchaGenerator::new(fs::read("model.onnx")?)?;
         let (mel, mel_lengths) = generator.synthesise(result, generator::Scale::default())?;
         let vocoder = vocoder::Vocoder::new(fs::read("vocoder.onnx")?)?;
