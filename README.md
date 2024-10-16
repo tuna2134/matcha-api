@@ -11,7 +11,13 @@ $ wget https://huggingface.co/tuna2134/uji-tts_jsut/resolve/main/vocoder.onnx
 ```
 
 ### 2. Bring Matcha(Uji)-TTS onnx model
-Now working...
+Matcha-TTSのonnxモデルを持ってきて`model.onnx`に改名してください。
+
+## Run API Server
+APIサーバを実行します。
+```sh
+cargo run -r -p matcha_api # cudaで動かしたい場合-F cudaも追加する
+```
 
 ## Todo:
 - [x] vocoderの実装
