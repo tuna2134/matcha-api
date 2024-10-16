@@ -1,0 +1,7 @@
+[package]
+name = "matcha_api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+matcha_core = { version = "0.1.0", path = "../matcha_core" }
