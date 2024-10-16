@@ -22,8 +22,7 @@ impl Vocoder {
         ]?)?;
         let wav: Array2<f32> = outputs["wav"]
             .try_extract_tensor::<f32>()?
-            .into_dimensionality::<Ix2>()
-            .unwrap()
+            .into_dimensionality::<Ix2>()?
             .to_owned();
         array_to_vec(wav)
     }

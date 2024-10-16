@@ -2,7 +2,7 @@ use crate::error::Result;
 use crate::general::load_model;
 use crate::utils::intersperse;
 
-use ndarray::{arr1, Array2, Array3};
+use ndarray::{arr1, Array2, Array3, Ix3};
 use ort::Session;
 
 pub struct MatchaGenerator {
@@ -24,18 +24,11 @@ impl MatchaGenerator {
             "x_lengths" => x_lengths,
             "scales" => scale.to_ndarray(),
         ]?)?;
-        let audio_array = outputs["mel"].try_extract_tensor::<f32>()?.to_owned();
+        let audio_array = outputs["mel"].try_extract_tensor::<f32>()?.into_dimensionality::<Ix3>()?.to_owned();
         let mel_lengths = outputs["mel_lengths"].try_extract_tensor::<i64>()?;
 
         Ok((
-            Array3::from_shape_vec(
-                (
-                    audio_array.shape()[0],
-                    audio_array.shape()[1],
-                    audio_array.shape()[2],
-                ),
-                audio_array.into_raw_vec_and_offset().0,
-            )?,
+            audio_array,
             mel_lengths[0],
         ))
     }
