@@ -9,8 +9,8 @@ with open("vocoder.onnx", "rb") as f:
 
 matcha = Matcha(model, vocoder)
 symbols = matcha.preprocess("おはようございます")
-data = matcha.synthesise(symbols)
-wav = matcha.decode(data)
+mel, mel_lengths = matcha.synthesise(symbols)
+wav = matcha.decode(mel, mel_lengths)
 
 
 with open("output.wav", "wb") as f:
