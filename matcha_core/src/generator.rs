@@ -1,8 +1,8 @@
 use crate::error::Result;
 use crate::utils::intersperse;
 
-use ort::{GraphOptimizationLevel, Session};
 use ndarray::{arr1, Array2};
+use ort::{GraphOptimizationLevel, Session};
 
 pub struct MatchaGenerator {
     session: Session,
