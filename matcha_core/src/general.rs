@@ -5,9 +5,9 @@ pub fn load_model<T: AsRef<[u8]>>(model: T) -> Result<Session> {
     let mut exp = Vec::new();
     #[cfg(feature = "cuda")]
     {
-        let mut cuda = ort::CUDAExecutionProvider::default()
+        let cuda = ort::CUDAExecutionProvider::default()
             .with_conv_algorithm_search(ort::CUDAExecutionProviderCuDNNConvAlgoSearch::Default);
-        exp.push(cuda.build()?);
+        exp.push(cuda.build());
     }
     exp.push(ort::CPUExecutionProvider::default().build());
     let session = Session::builder()?
