@@ -23,3 +23,4 @@ cargo run -r -p matcha_api # cudaで動かしたい場合-F cudaも追加する
 - [x] vocoderの実装
 - [x] preprocessの実装
 - [x] matcha本体の実装
+- [ ] C++ライブラリ作成
