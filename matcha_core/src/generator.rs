@@ -1,8 +1,9 @@
 use crate::error::Result;
+use crate::general::load_model;
 use crate::utils::intersperse;
 
 use ndarray::{arr1, Array2, Array3};
-use ort::{GraphOptimizationLevel, Session};
+use ort::{Session};
 
 pub struct MatchaGenerator {
     session: Session,
@@ -10,14 +11,7 @@ pub struct MatchaGenerator {
 
 impl MatchaGenerator {
     pub fn new<P: AsRef<[u8]>>(model: P) -> Result<Self> {
-        let mut exp = Vec::new();
-        exp.push(ort::CPUExecutionProvider::default().build());
-        let session = Session::builder()?
-            .with_execution_providers(exp)?
-            .with_optimization_level(GraphOptimizationLevel::Level3)?
-            .with_parallel_execution(true)?
-            .with_inter_threads(num_cpus::get_physical())?
-            .commit_from_memory(model.as_ref())?;
+        let session = load_model(model)?;
         Ok(Self { session })
     }
 

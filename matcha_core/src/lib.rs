@@ -3,6 +3,7 @@ pub mod general;
 pub mod generator;
 pub mod text;
 pub mod utils;
+pub mod vocoder;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
@@ -19,7 +20,9 @@ mod tests {
         let result = text::txt2seq("こんにちは", pp)?;
         println!("{:?}", result);
         let generator = generator::MatchaGenerator::new(fs::read("model.onnx")?)?;
-        generator.synthesise(result, generator::Scale::default())?;
+        let (mel, mel_lengths) = generator.synthesise(result, generator::Scale::default())?;
+        let vocoder = vocoder::Vocoder::new(fs::read("vocoder.onnx")?)?;
+        vocoder.decode(mel, mel_lengths)?;
         Ok(())
     }
 }
