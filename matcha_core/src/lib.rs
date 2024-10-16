@@ -9,12 +9,14 @@ pub fn add(left: usize, right: usize) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
 
     #[test]
-    fn it_works() -> error::Result<()> {
+    fn it_works() -> anyhow::Result<()> {
         let pp = text::TextPreprocessor::new()?;
         let result = text::txt2seq("こんにちは", pp)?;
         println!("{:?}", result);
+        let generator = generator::MatchaGenerator::new(fs::read("model.onnx")?)?;
         Ok(())
     }
 }
