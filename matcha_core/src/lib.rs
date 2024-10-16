@@ -1,4 +1,5 @@
 pub mod error;
+pub mod general;
 pub mod generator;
 pub mod text;
 pub mod utils;

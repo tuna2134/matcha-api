@@ -1,7 +1,7 @@
 import onnxruntime
 
 
-session = onnxruntime.InferenceSession("model.onnx")
+session = onnxruntime.InferenceSession("vocoder.onnx")
 
 
 print([input.name for input in session.get_inputs()])
