@@ -24,13 +24,13 @@ impl MatchaGenerator {
             "x_lengths" => x_lengths,
             "scales" => scale.to_ndarray(),
         ]?)?;
-        let audio_array = outputs["mel"].try_extract_tensor::<f32>()?.into_dimensionality::<Ix3>()?.to_owned();
+        let audio_array = outputs["mel"]
+            .try_extract_tensor::<f32>()?
+            .into_dimensionality::<Ix3>()?
+            .to_owned();
         let mel_lengths = outputs["mel_lengths"].try_extract_tensor::<i64>()?;
 
-        Ok((
-            audio_array,
-            mel_lengths[0],
-        ))
+        Ok((audio_array, mel_lengths[0]))
     }
 }
 
