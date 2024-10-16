@@ -69,8 +69,8 @@ async fn synthesize(
                 speaking_rate,
             },
         )?;
-        let data = state.vocoder.decode(mel, mel_lengths)?;
-        data
+
+        state.vocoder.decode(mel, mel_lengths)?
     };
     Ok(([(CONTENT_TYPE, "audio/wav")], buffer))
 }
