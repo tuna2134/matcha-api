@@ -4,6 +4,8 @@ use thiserror::Error;
 pub enum Error {
     #[error("JPreprocess error: {0}")]
     JPreprocessError(#[from] jpreprocess::error::JPreprocessError),
+    #[error("Ort error: {0}")]
+    OrtError(#[from] ort::Error),
     #[error("other")]
     OtherError(String),
 }

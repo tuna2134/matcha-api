@@ -1,4 +1,5 @@
 pub mod error;
+pub mod generator;
 pub mod text;
 
 pub fn add(left: usize, right: usize) -> usize {
