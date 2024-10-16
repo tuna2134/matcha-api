@@ -1,7 +1,7 @@
 use crate::error::Result;
 use crate::utils::intersperse;
 
-use ndarray::{arr1, Array2};
+use ndarray::{arr1, Array2, Array3};
 use ort::{GraphOptimizationLevel, Session};
 
 pub struct MatchaGenerator {
@@ -21,7 +21,7 @@ impl MatchaGenerator {
         Ok(Self { session })
     }
 
-    pub fn synthesise(&self, symbols: Vec<i64>, scale: Scale) -> Result<()> {
+    pub fn synthesise(&self, symbols: Vec<i64>, scale: Scale) -> Result<(Array3<f32>, i32)> {
         let symbols = intersperse(symbols, 0);
         let x = Array2::from_shape_vec((1, symbols.len()), symbols.clone())?;
         let x_lengths = arr1(&[symbols.len() as i64]);
@@ -30,7 +30,20 @@ impl MatchaGenerator {
             "x_lengths" => x_lengths,
             "scales" => scale.to_ndarray(),
         ]?)?;
-        Ok(())
+        let audio_array = outputs["mel"].try_extract_tensor::<f32>()?.to_owned();
+        let mel_lengths = outputs["mel_lengths"].try_extract_tensor::<i32>()?;
+
+        Ok((
+            Array3::from_shape_vec(
+                (
+                    audio_array.shape()[0],
+                    audio_array.shape()[1],
+                    audio_array.shape()[2],
+                ),
+                audio_array.into_raw_vec_and_offset().0,
+            )?,
+            mel_lengths[0],
+        ))
     }
 }
 
