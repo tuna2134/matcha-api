@@ -18,11 +18,11 @@ mod tests {
     fn it_works() -> anyhow::Result<()> {
         let pp = text::TextPreprocessor::new()?;
         let result = text::txt2seq("こんにちは", pp)?;
-        println!("{:?}", result);
         let generator = generator::MatchaGenerator::new(fs::read("model.onnx")?)?;
         let (mel, mel_lengths) = generator.synthesise(result, generator::Scale::default())?;
         let vocoder = vocoder::Vocoder::new(fs::read("vocoder.onnx")?)?;
-        vocoder.decode(mel, mel_lengths)?;
+        let data = vocoder.decode(mel, mel_lengths)?;
+        fs::write("output.wav", data)?;
         Ok(())
     }
 }

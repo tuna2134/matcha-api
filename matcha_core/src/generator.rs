@@ -3,7 +3,7 @@ use crate::general::load_model;
 use crate::utils::intersperse;
 
 use ndarray::{arr1, Array2, Array3};
-use ort::{Session};
+use ort::Session;
 
 pub struct MatchaGenerator {
     session: Session,
