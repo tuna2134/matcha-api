@@ -14,7 +14,7 @@ impl MatchaGenerator {
             .with_optimization_level(GraphOptimizationLevel::Level3)?
             .with_parallel_execution(true)?
             .with_inter_threads(num_cpus::get_physical())?
-            .commit_from_memory(model.as_ref());
+            .commit_from_memory(model.as_ref())?;
         Ok(Self { session })
     }
 }
