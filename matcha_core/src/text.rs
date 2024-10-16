@@ -103,9 +103,8 @@ const SYMBOL2ID: Lazy<HashMap<String, i64>> = Lazy::new(|| {
     symbol2id
 });
 
-pub fn txt2seq(text: &str, pp: TextPreprocessor) -> Result<Vec<i64>> {
+pub fn txt2seq(clean_text: Vec<String>) -> Result<Vec<i64>> {
     let mut sequence: Vec<i64> = Vec::new();
-    let clean_text = pp.g2p(text)?;
     for symbol in clean_text {
         let id = *SYMBOL2ID.get(&symbol).unwrap();
         sequence.push(id);
