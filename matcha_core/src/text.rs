@@ -18,7 +18,7 @@ impl TextPreprocessor {
         })
     }
 
-    pub fn preprocess(&self, text: &str) -> Result<Vec<String>> {
+    pub fn g2p(&self, text: &str) -> Result<Vec<String>> {
         let labels = self.pp.extract_fullcontext(text)?;
         let mut results: Vec<String> = Vec::new();
 
