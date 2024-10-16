@@ -670,6 +670,8 @@ name = "matcha_core"
 version = "0.1.0"
 dependencies = [
  "jpreprocess",
+ "once_cell",
+ "serde_json",
  "thiserror",
 ]
 

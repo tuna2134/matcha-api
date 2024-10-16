@@ -3,6 +3,9 @@ use jpreprocess::{
     kind::JPreprocessDictionaryKind, DefaultFetcher, JPreprocess, JPreprocessConfig,
     SystemDictionaryConfig,
 };
+use once_cell::sync::Lazy;
+
+use std::collections::HashMap;
 
 pub struct TextPreprocessor {
     pp: JPreprocess<DefaultFetcher>,
@@ -89,4 +92,23 @@ impl TextPreprocessor {
 
         Ok(results)
     }
+}
+
+const SYMBOL2ID: Lazy<HashMap<String, u32>> = Lazy::new(|| {
+    let mut symbol2id = HashMap::new();
+    let symbols: Vec<String> = serde_json::from_str(include_str!("./symbols.json")).unwrap();
+    for (i, symbol) in symbols.iter().enumerate() {
+        symbol2id.insert(symbol.clone(), i as u32);
+    }
+    symbol2id
+});
+
+pub fn txt2seq(text: &str, pp: TextPreprocessor) -> Result<Vec<u32>> {
+    let mut sequence: Vec<u32> = Vec::new();
+    let clean_text = pp.g2p(text)?;
+    for symbol in clean_text {
+        let id = *SYMBOL2ID.get(&symbol).unwrap();
+        sequence.push(id);
+    }
+    Ok(sequence)
 }
