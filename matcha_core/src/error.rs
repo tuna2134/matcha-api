@@ -6,6 +6,8 @@ pub enum Error {
     JPreprocessError(#[from] jpreprocess::error::JPreprocessError),
     #[error("Ort error: {0}")]
     OrtError(#[from] ort::Error),
+    #[error("Ndarray error: {0}")]
+    NdArrayError(#[from] ndarray::ShapeError),
     #[error("other")]
     OtherError(String),
 }

@@ -2,7 +2,7 @@ use crate::error::Result;
 use crate::utils::intersperse;
 
 use ort::{GraphOptimizationLevel, Session};
-use ndarray::arr1;
+use ndarray::{arr1, Array2};
 
 pub struct MatchaGenerator {
     session: Session,
@@ -22,13 +22,14 @@ impl MatchaGenerator {
     }
 
     pub fn synthesise(&self, symbols: Vec<i64>, scale: Scale) -> Result<()> {
-        let x = arr1(&intersperse(symbols, 0)).to_owned();
-        let x_lengths = arr1(&[x.len() as i64]).to_owned();
+        let symbols = intersperse(symbols, 0);
+        let x = Array2::from_shape_vec((1, symbols.len()), symbols.clone())?;
+        let x_lengths = arr1(&[symbols.len() as i64]);
         let outputs = self.session.run(ort::inputs![
             "x" => x,
             "x_lengths" => x_lengths,
-            "scale" => scale.to_ndarray(),
-        ]?);
+            "scales" => scale.to_ndarray(),
+        ]?)?;
         Ok(())
     }
 }
