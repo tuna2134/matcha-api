@@ -45,12 +45,12 @@ impl TextPreprocessor {
                         results.push("?".to_string());
                     }
                     continue;
-                } else if p3 == "pau" {
-                    results.push("_".to_string());
-                    continue;
-                } else {
-                    results.push(p3);
                 }
+            } else if p3 == "pau" {
+                results.push("_".to_string());
+                continue;
+            } else {
+                results.push(p3);
             }
 
             let a1 = label

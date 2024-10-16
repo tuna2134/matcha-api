@@ -10,8 +10,10 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn it_works() -> error::Result<()> {
+        let pp = text::TextPreprocessor::new()?;
+        let result = text::txt2seq("こんにちは", pp)?;
+        println!("{:?}", result);
+        Ok(())
     }
 }
