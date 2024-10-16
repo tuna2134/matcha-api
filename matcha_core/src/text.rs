@@ -94,17 +94,17 @@ impl TextPreprocessor {
     }
 }
 
-const SYMBOL2ID: Lazy<HashMap<String, u32>> = Lazy::new(|| {
+const SYMBOL2ID: Lazy<HashMap<String, i64>> = Lazy::new(|| {
     let mut symbol2id = HashMap::new();
     let symbols: Vec<String> = serde_json::from_str(include_str!("./symbols.json")).unwrap();
     for (i, symbol) in symbols.iter().enumerate() {
-        symbol2id.insert(symbol.clone(), i as u32);
+        symbol2id.insert(symbol.clone(), i as i64);
     }
     symbol2id
 });
 
-pub fn txt2seq(text: &str, pp: TextPreprocessor) -> Result<Vec<u32>> {
-    let mut sequence: Vec<u32> = Vec::new();
+pub fn txt2seq(text: &str, pp: TextPreprocessor) -> Result<Vec<i64>> {
+    let mut sequence: Vec<i64> = Vec::new();
     let clean_text = pp.g2p(text)?;
     for symbol in clean_text {
         let id = *SYMBOL2ID.get(&symbol).unwrap();
