@@ -25,6 +25,6 @@ impl Vocoder {
             .into_dimensionality::<Ix2>()
             .unwrap()
             .to_owned();
-        Ok(array_to_vec(wav)?)
+        array_to_vec(wav)
     }
 }
