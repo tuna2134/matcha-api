@@ -7,6 +7,7 @@ with open("model.onnx", "rb") as f:
 with open("vocoder.onnx", "rb") as f:
     vocoder = f.read()
 
+
 matcha = Matcha(model, vocoder)
 symbols = matcha.preprocess("おはようございます")
 mel, mel_lengths = matcha.synthesise(symbols)
