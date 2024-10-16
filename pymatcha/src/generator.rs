@@ -1,6 +1,7 @@
-use matcha_core::{MatchaGenerator, txt2seq, TextPreprocessor, Scale, Vocoder};
+use matcha_core::{txt2seq, MatchaGenerator, Scale, TextPreprocessor, Vocoder};
+use numpy::{PyArray3, PyReadonlyArray3};
 use pyo3::prelude::*;
-use numpy::{PyReadonlyArray3, PyArray3};
+use pyo3::types::PyBytes;
 
 #[pyclass]
 pub struct Matcha {
@@ -25,14 +26,23 @@ impl Matcha {
         Ok(txt2seq(clean_text)?)
     }
 
-    fn synthesise<'a>(&'a self, py: Python<'a>, symbols: Vec<i64>) -> anyhow::Result<(Bound<PyArray3<f32>>, i64)> {
+    fn synthesise<'a>(
+        &'a self,
+        py: Python<'a>,
+        symbols: Vec<i64>,
+    ) -> anyhow::Result<(Bound<PyArray3<f32>>, i64)> {
         let (mel, mel_lengths) = self.generator.synthesise(symbols, Scale::default())?;
         Ok((PyArray3::from_owned_array_bound(py, mel), mel_lengths))
     }
 
-    fn decode(&self, mel: PyReadonlyArray3<f32>, mel_lengths: i64) -> anyhow::Result<Vec<u8>> {
+    fn decode<'a>(
+        &'a self,
+        py: Python<'a>,
+        mel: PyReadonlyArray3<f32>,
+        mel_lengths: i64,
+    ) -> anyhow::Result<Bound<'a, PyBytes>> {
         let mel = mel.as_array();
         let data = self.vocoder.decode(mel.to_owned(), mel_lengths)?;
-        Ok(data)
+        Ok(PyBytes::new_bound(py, &data))
     }
 }
